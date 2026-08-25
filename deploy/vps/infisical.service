@@ -10,16 +10,11 @@ Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/opt/infisical
 # Use the full path to docker if needed; adjust if docker is installed elsewhere
-ExecStart=/usr/bin/docker compose -f docker-compose.prod.yml up -d --remove-orphans
+ExecStart=/usr/bin/docker compose -f docker-compose.prod.yml up -d
 ExecStop=/usr/bin/docker compose -f docker-compose.prod.yml down
-ExecReload=/usr/bin/docker compose -f docker-compose.prod.yml up -d --remove-orphans
+ExecReload=/usr/bin/docker compose -f docker-compose.prod.yml up -d --force-recreate
 TimeoutStartSec=300
-Restart=on-failure
-RestartSec=10
-
-# Optional: limit resources if desired
-# MemoryLimit=2G
-# CPUQuota=200%
+TimeoutStopSec=120
 
 [Install]
 WantedBy=multi-user.target
