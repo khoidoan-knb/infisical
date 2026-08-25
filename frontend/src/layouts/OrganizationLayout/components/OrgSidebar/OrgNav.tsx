@@ -67,12 +67,13 @@ export const OrgNav = () => {
           pathSuffix: "access-management",
           activeMatch: /organizations\/[^/]+\/(members|identities|groups|roles)/
         },
-        {
-          label: "Usage & Billing",
-          icon: CreditCard,
-          pathSuffix: "billing",
-          hidden: !isRootOrganization
-        },
+        // Hidden for free-only self-hosted: remove Usage & Billing from the sidebar
+        // {
+        //   label: "Usage & Billing",
+        //   icon: CreditCard,
+        //   pathSuffix: "billing",
+        //   hidden: !isRootOrganization
+        // },
         { label: "Audit Logs", icon: FileText, pathSuffix: "audit-logs" },
         { label: "Settings", icon: Settings, pathSuffix: "settings", opensSubmenu: true }
       ]
