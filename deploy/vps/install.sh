@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Simple installer: places Infisical under /opt/infisical and registers it as a systemd service.
+# Standalone Infisical installer for Linux VPS
+# Places Infisical under /opt/infisical and registers it as a systemd service.
+# Postgres + Redis are included in the Docker Compose stack — no external DB needed.
 # Run as root (or with sudo).
 
 INSTALL_DIR="/opt/infisical"
 SERVICE_NAME="infisical"
 REPO_URL="https://github.com/khoidoan-knb/infisical.git"
 
-echo "==> Installing Infisical as an OS service"
+echo "==> Installing Infisical in STANDALONE mode (no external database required)"
+echo "    Postgres and Redis will run automatically inside Docker."
 
 if [[ $EUID -ne 0 ]]; then
   echo "Please run as root (sudo $0)"
@@ -43,10 +46,13 @@ cd "$INSTALL_DIR"
 if [[ ! -f .env ]]; then
   echo "==> Creating .env from .env.example"
   cp .env.example .env
+  echo ""
   echo "IMPORTANT: Edit $INSTALL_DIR/.env before first start"
-  echo "  - Change ENCRYPTION_KEY and AUTH_SECRET"
-  echo "  - Set SITE_URL to your public URL (e.g. https://secrets.example.com)"
-  echo "  - Set strong POSTGRES_PASSWORD"
+  echo "  - Change ENCRYPTION_KEY  (openssl rand -hex 16)"
+  echo "  - Change AUTH_SECRET    (openssl rand -base64 32)"
+  echo "  - Set SITE_URL to your public URL"
+  echo "  - Set a strong POSTGRES_PASSWORD"
+  echo ""
 fi
 
 # Install systemd unit
@@ -63,7 +69,15 @@ systemctl daemon-reload
 systemctl enable "$SERVICE_NAME"
 
 echo ""
-echo "==> Service installed."
+echo "==> Standalone service installed successfully."
+echo ""
+echo "What is included automatically:"
+echo "  - Infisical application"
+echo "  - PostgreSQL (data stored in Docker volume)"
+echo "  - Redis      (data stored in Docker volume)"
+echo ""
+echo "You do NOT need to install or manage any external database."
+echo ""
 echo "Next steps:"
 echo "  1. Edit config:   nano $INSTALL_DIR/.env"
 echo "  2. Start service: systemctl start $SERVICE_NAME"

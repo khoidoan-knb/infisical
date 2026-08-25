@@ -1,6 +1,6 @@
 [Unit]
-Description=Infisical Secrets Management (Docker Compose)
-Documentation=https://infisical.com/docs/self-hosting/overview
+Description=Infisical Standalone (app + Postgres + Redis via Docker Compose)
+Documentation=https://github.com/khoidoan-knb/infisical/tree/main/deploy/vps
 Requires=docker.service
 After=docker.service network-online.target
 Wants=network-online.target
