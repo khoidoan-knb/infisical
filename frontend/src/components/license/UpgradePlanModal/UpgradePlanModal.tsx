@@ -23,18 +23,22 @@ type Props = {
   isEnterpriseFeature?: boolean;
 };
 
-export const UpgradePlanModal = ({ text, isOpen, onOpenChange }: Props): JSX.Element => {
+// Modified for free-only self-hosted: never show upgrade / paid feature prompts
+export const UpgradePlanModal = ({ text, isOpen, onOpenChange }: Props): JSX.Element | null => {
+  // Completely disable the upgrade modal so paid features never show payment requests in the UI
+  return null;
+
+  /* Original implementation kept below for reference
   const { currentOrg } = useOrganization();
   const scopeVariant = useScopeVariant();
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      {/* Keep upgrade prompts above the dialog or sheet that triggered them. */}
       <DialogContent className="z-[70] sm:max-w-xl" overlayClassName="z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2.5">
             <SparklesIcon className="size-5 text-muted" />
-            Unleash Infisical&apos;s Full Power
+            Unleash Infisical's Full Power
           </DialogTitle>
           <DialogDescription>
             Upgrade and get access to this, as well as to other powerful enhancements.
@@ -54,4 +58,5 @@ export const UpgradePlanModal = ({ text, isOpen, onOpenChange }: Props): JSX.Ele
       </DialogContent>
     </Dialog>
   );
+  */
 };
